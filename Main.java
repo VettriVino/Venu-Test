@@ -14,6 +14,8 @@ class Dog implements Animal,Mammal{
 }
 public class Main{
     public static void main(String args[]){
-        Dog d=new Dog();      
+        Dog obj=new Dog(); 
+        obj.display();
+        obj.display1();
     }
 }
