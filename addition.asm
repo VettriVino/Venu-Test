@@ -1,0 +1,4 @@
+MOV Ax,41H
+MOV Bx,31H
+ADD Ax,Bx
+HLT
