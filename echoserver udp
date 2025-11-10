@@ -1,0 +1,37 @@
+\\server
+import socket
+
+HOST = '127.0.0.1'   # Localhost
+PORT = 9999          # Port number
+
+# Create a UDP socket
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+# Bind the socket to the address
+s.bind((HOST, PORT))
+print("UDP Server is running and waiting for messages...")
+
+while True:
+    data, addr = s.recvfrom(1024)  # Receive data from client
+    print("Received message from", addr, ":", data.decode())
+    if not data:
+        break
+    s.sendto(data, addr)  # Echo back the same data
+
+s.close()
+\\client
+import socket
+
+HOST = '127.0.0.1'   # Server address
+PORT = 9999          # Same port as server
+
+# Create a UDP socket
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+message = "Hello, UDP Server!"
+s.sendto(message.encode(), (HOST, PORT))
+
+data, addr = s.recvfrom(1024)
+print("Received from server:", data.decode())
+
+s.close()
