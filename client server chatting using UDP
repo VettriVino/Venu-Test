@@ -1,0 +1,62 @@
+server coding:
+import socket
+
+def udp_server():
+    host = '127.0.0.1'   # Localhost
+    port = 5000          # Port number
+
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    server_socket.bind((host, port))
+
+    print("UDP Chat Server is ready to receive messages...")
+
+    while True:
+        data, addr = server_socket.recvfrom(1024)     # Receive message
+        message = data.decode()
+        print("Client:", message)
+
+        if message.lower() == 'bye':
+            print("Client ended the chat.")
+            break
+
+        reply = input("Server -> ")
+        server_socket.sendto(reply.encode(), addr)    # Send reply
+
+        if reply.lower() == 'bye':
+            print("Server ended the chat.")
+            break
+
+    server_socket.close()
+
+if _name_ == '_main_':
+    udp_server()
+
+client coding:
+import socket
+
+def udp_client():
+    host = '127.0.0.1'   # Server IP
+    port = 5000          # Same port as server
+
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+    print("Type 'bye' to end the chat.")
+    while True:
+        message = input("Client -> ")
+        client_socket.sendto(message.encode(), (host, port))   # Send message
+
+        if message.lower() == 'bye':
+            print("Client ended the chat.")
+            break
+
+        data, addr = client_socket.recvfrom(1024)
+        print("Server:", data.decode())
+
+        if data.decode().lower() == 'bye':
+            print("Server ended the chat.")
+            break
+
+    client_socket.close()
+
+if _name_ == '_main_':
+    udp_client()
